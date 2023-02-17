@@ -5,6 +5,7 @@ from models import storage
 from api.c1.views import app_views
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
 
@@ -17,12 +18,7 @@ def close_db():
 
 
 if __name__ == "__main__":
-    host = getenv('HBNB_API_HOST')
-    port = getenv('HBNB_API_PORT')
+    host = getenv('HBNB_API_HOST', default='0.0.0.0')
+    port = getenv('HBNB_API_PORT', default=5000)
 
-    if not host:
-        host = '0.0.0.0'
-    if not port:
-        port = '5000'
-
-    app.run(host=host, port=port, threaded=True)
+    app.run(host, int(port), threaded=True)
